@@ -24,3 +24,22 @@ Resources:
       Runtime: python3.12
       Architectures:
         - x86_64
+      # Environment:
+      #   Variables:
+      #     Application: ""
+      #     KeyProviderUrl: ""
+      #     MediaConvertRole: ""
+      #     StaticKey1: ""
+      #     StaticKey2: ""
+      #     StaticKey3: ""
+      #     StaticKey4: ""
+      #     StaticKey5: ""
+
+    #       "Application": "VOD",
+    # "KeyProviderUrl": "https://4114-103-181-163-35.ngrok-free.app/api/v1/handshake",
+    # "MediaConvertRole": "arn:aws:iam::851725650310:role/MediaConvertRole",
+    # "StaticKey1": "52CD6067149FAA49B1698C1025ACC26C",
+    # "StaticKey2": "52CD6067149FAA49B1698C1025ACC26D",
+    # "StaticKey3": "52CD6067149FAA49B1698C1025ACC26E",
+    # "StaticKey4": "52CD6067149FAA49B1698C1025ACC26F",
+    # "StaticKey5": "52CD6067149FAA49B1698C1025ACC26B"
