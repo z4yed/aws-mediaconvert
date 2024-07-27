@@ -13,19 +13,35 @@ logger.setLevel(logging.INFO)
 
 s3 = boto3.resource('s3')
 
-def override_job_encryption(job_settings, static_key, key_provider_url):
+# def override_job_encryption(job_settings, static_key, key_provider_url):
+#     # Check if the job_settings contain HLS encryption settings
+#     if 'OutputGroups' in job_settings:
+#         for output_group in job_settings['OutputGroups']:
+#             if 'HlsGroupSettings' in output_group.get('OutputGroupSettings', {}):
+#                 encryption_settings = output_group['OutputGroupSettings']['HlsGroupSettings'].get('Encryption', {})
+#                 static_key_provider = encryption_settings.get('StaticKeyProvider', {})
+#                 # Override StaticKey value if it exists
+#                 if 'StaticKeyValue' in static_key_provider:
+#                     static_key_provider['StaticKeyValue'] = static_key
+#                 # Override Url if it exists
+#                 if 'Url' in static_key_provider:
+#                     static_key_provider['Url'] = key_provider_url
+
+def add_encryption(job_settings, static_key, key_provider_url):
     # Check if the job_settings contain HLS encryption settings
     if 'OutputGroups' in job_settings:
         for output_group in job_settings['OutputGroups']:
             if 'HlsGroupSettings' in output_group.get('OutputGroupSettings', {}):
-                encryption_settings = output_group['OutputGroupSettings']['HlsGroupSettings'].get('Encryption', {})
-                static_key_provider = encryption_settings.get('StaticKeyProvider', {})
-                # Override StaticKey value if it exists
-                if 'StaticKeyValue' in static_key_provider:
-                    static_key_provider['StaticKeyValue'] = static_key
-                # Override Url if it exists
-                if 'Url' in static_key_provider:
-                    static_key_provider['Url'] = key_provider_url
+                encryption_settings = {
+                    "EncryptionMethod": "AES128",
+                    "StaticKeyProvider": {
+                        "StaticKeyValue": static_key,
+                        "Url": key_provider_url
+                    },
+                    "Type": "STATIC_KEY",
+                    "InitializationVectorInManifest": "INCLUDE"
+                }
+                output_group['OutputGroupSettings']['HlsGroupSettings']['Encryption'] = encryption_settings
 
 def lambda_handler(event, context):
     source_bucket = event['Records'][0]['s3']['bucket']['name']
@@ -45,6 +61,7 @@ def lambda_handler(event, context):
     }
 
     job = None  # Initialize job variable
+    shouldEncrypt = True
 
     try:
         bucket = s3.Bucket(source_bucket)
@@ -85,6 +102,13 @@ def lambda_handler(event, context):
             job_metadata['settings'] = job_filename
             job_settings['Inputs'][0]['FileInput'] = source_s3
 
+            # fetch the file from s3 and check the metadata 'type' = 'trailer'
+            # if the metadata is 'trailer' then set shouldEncrypt to False
+            source_s3_object = s3.Object(source_bucket, source_key)
+            metadata = source_s3_object.metadata
+            if metadata.get('type') == 'trailer':
+                shouldEncrypt = False
+
             # Construct the output directory path in the output bucket
             output_directory = os.path.dirname(source_key)
             output_directory = output_directory.lstrip('/')
@@ -102,11 +126,11 @@ def lambda_handler(event, context):
                     output_group['OutputGroupSettings']['FileGroupSettings']['Destination'] = f's3://{destination_bucket}/{output_directory}{template_destination_key}'
 
             # Override StaticKey value if provided
-            if static_key:
-                override_job_encryption(job_settings, static_key, key_provider_url)
+            if shouldEncrypt and static_key:
+                add_encryption(job_settings, static_key, key_provider_url)
                 job_metadata['staticKey'] = static_key
+                print('Static key used: ', static_key)
 
-            print('Static key used: ', static_key)
             print('Job setting: ', job_settings)
             print('metadata: ', job_metadata)
 

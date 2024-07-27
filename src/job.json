@@ -309,15 +309,6 @@
               }
             }
           },
-          "Encryption": {
-            "EncryptionMethod": "AES128",
-            "StaticKeyProvider": {
-              "StaticKeyValue": "<OVERRRIDE THIS>",
-              "Url": "<OVERRRIDE THIS>"
-            },
-            "Type": "STATIC_KEY",
-            "InitializationVectorInManifest": "INCLUDE"
-          },
           "TimedMetadataId3Frame": "PRIV",
           "CodecSpecification": "RFC_4281",
           "OutputSelection": "MANIFESTS_AND_SEGMENTS",
