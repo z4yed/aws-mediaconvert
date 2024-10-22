@@ -50,13 +50,13 @@ def lambda_handler(event, context):
 
     destination_bucket = source_bucket  # Use the same bucket for output
     media_convert_role = os.environ['MediaConvertRole']
-    application = os.environ['Application']
     region = os.environ['AWS_DEFAULT_REGION']
+    stack_name = os.environ['StackName']
     status_code = 200
     jobs = []
     job_metadata = {
         'assetID': str(uuid.uuid4()),  # Generating a unique asset ID
-        'application': application,
+        'stackName': stack_name,
         'input': source_s3
     }
 

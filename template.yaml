@@ -8,7 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 50
     MemorySize: 128
 
     # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
@@ -20,20 +20,21 @@ Resources:
     Properties:
       CodeUri: src/
       Handler: app.lambda_handler
-      Role: arn:aws:iam::851725650310:role/VODLambdaRole
+      # Role: arn:aws:iam::851725650310:role/VODLambdaRole -- tc aws
+      Role: arn:aws:iam::026090514107:role/MediaConvertRole
       Runtime: python3.12
       Architectures:
         - x86_64
-      # Environment:
-      #   Variables:
-      #     Application: ""
-      #     KeyProviderUrl: ""
-      #     MediaConvertRole: ""
-      #     StaticKey1: ""
-      #     StaticKey2: ""
-      #     StaticKey3: ""
-      #     StaticKey4: ""
-      #     StaticKey5: ""
+      Environment:
+        Variables:
+          StackName: "MediaSuite"
+          KeyProviderUrl: "https://jupiter.dev.schoolism.com/api/v1/handshake"
+          MediaConvertRole: "arn:aws:iam::026090514107:role/MediaConvertRole"
+          StaticKey1: "52CD6067149FAA49B1698C1025ACC26B"
+          StaticKey2: "52CD6067149FAA49B1698C1025ACC26C"
+          StaticKey3: "52CD6067149FAA49B1698C1025ACC26D"
+          StaticKey4: "52CD6067149FAA49B1698C1025ACC26E"
+          StaticKey5: "52CD6067149FAA49B1698C1025ACC26F"
 
     #       "Application": "VOD",
     # "KeyProviderUrl": "https://4114-103-181-163-35.ngrok-free.app/api/v1/handshake",
