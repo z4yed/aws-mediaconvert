@@ -106,7 +106,8 @@ def lambda_handler(event, context):
             # if the metadata is 'trailer' then set shouldEncrypt to False
             source_s3_object = s3.Object(source_bucket, source_key)
             metadata = source_s3_object.metadata
-            if metadata.get('type') == 'trailer':
+            print('metadata: ', metadata)
+            if metadata.get('type') != 'secured':
                 shouldEncrypt = False
 
             # Construct the output directory path in the output bucket

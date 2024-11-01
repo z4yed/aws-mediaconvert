@@ -24,9 +24,9 @@
             }
           },
           "VideoDescription": {
-            "Width": 640,
+            "Width": 854,
             "ScalingBehavior": "DEFAULT",
-            "Height": 360,
+            "Height": 480,
             "TimecodeInsertion": "DISABLED",
             "AntiAlias": "ENABLED",
             "Sharpness": 50,
@@ -97,7 +97,7 @@
               "IFrameOnlyManifest": "EXCLUDE"
             }
           },
-          "NameModifier": "_360"
+          "NameModifier": "_480"
         },
         {
           "ContainerSettings": {
@@ -121,9 +121,9 @@
             }
           },
           "VideoDescription": {
-            "Width": 960,
+            "Width": 1280,
             "ScalingBehavior": "DEFAULT",
-            "Height": 540,
+            "Height": 720,
             "TimecodeInsertion": "DISABLED",
             "AntiAlias": "ENABLED",
             "Sharpness": 50,
@@ -194,7 +194,7 @@
               "IFrameOnlyManifest": "EXCLUDE"
             }
           },
-          "NameModifier": "_540"
+          "NameModifier": "_720"
         },
         {
           "ContainerSettings": {
@@ -218,9 +218,9 @@
             }
           },
           "VideoDescription": {
-            "Width": 1280,
+            "Width": 1920,
             "ScalingBehavior": "DEFAULT",
-            "Height": 720,
+            "Height": 1080,
             "TimecodeInsertion": "DISABLED",
             "AntiAlias": "ENABLED",
             "Sharpness": 50,
@@ -291,7 +291,7 @@
               "IFrameOnlyManifest": "EXCLUDE"
             }
           },
-          "NameModifier": "_720"
+          "NameModifier": "_1080"
         }
       ],
       "OutputGroupSettings": {
